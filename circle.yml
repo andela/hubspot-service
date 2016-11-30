@@ -19,5 +19,5 @@ deployment:
   production:
     branch: master
     commands:
-      - now -t=${NOW_TOKEN} .
+      - now -t=${NOW_TOKEN} -e HSERVICE_NOW_TOKEN=${HSERVICE_NOW_TOKEN} -e HUBSPOT_KEY=${HUBSPOT_KEY} -e HSERVICE=${HSERVICE}
       - now-alias --token=${HSERVICE_NOW_TOKEN} -n=${HSERVICE} -a=${HSERVICE}.com
