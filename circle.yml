@@ -1,0 +1,23 @@
+## Customize the test machine
+machine:
+  timezone: America/New_York
+  node:
+    version: 7.0.0
+# general:
+#   artifacts:
+#     - __tests__/*.js.snap
+#     - components/**/*.js.snap
+# test:
+#   override:
+#     - npm run test
+dependencies:
+  cache_directories:
+    - node_modules
+  pre:
+    - npm i  -g now now-alias # handle deployment with zeit.com/now
+deployment:
+  production:
+    branch: master
+    commands:
+      - now -t=${NOW_TOKEN} .
+      - now-alias --token=${HSERVICE_NOW_TOKEN} -n=${HSERVICE} -a=${HSERVICE}.com
