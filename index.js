@@ -1,7 +1,8 @@
-var express = require('express');
-var request = require('request');
-var bodyParser = require('body-parser');
-var app = express();
+let express = require('express');
+let request = require('request');
+let bodyParser = require('body-parser');
+let middleware = require("./middleware.js");
+let app = express();
 const hubspotKey = process.env.HUBSPOT_KEY;
 
 app.use(bodyParser.json());
@@ -19,7 +20,12 @@ app.get('/', function (req, res) {
 });
 
 // Handle POST request to '/save'
-app.post('/save', function(req, res, next) {
+app.post('/save/', function(req, res, next) {
+
+  if (middleware.authMiddleware(req)) {
+    next()
+  } else {res.send('Error!')}
+}, function (req, res, next) {
   request({
     url: 'https://api.hubapi.com/contacts/v1/contact/?hapikey=' + hubspotKey,
     method: 'POST',
@@ -34,7 +40,6 @@ app.post('/save', function(req, res, next) {
       'body' : response.body
     });
   })
-
 });
 
 app.listen(3000).on('listening', function() { console.log ('server listening') });
